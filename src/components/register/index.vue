@@ -1,0 +1,107 @@
+<template>
+    <div class="register">
+        <div class="register-wrp">
+            <h1>CNLOOP</h1>                    
+            <div class="register-main">
+                <div class="username">
+                    <span>账号</span>
+                    <input type="text" placeholder="Username">
+                </div>
+                <div class="password">
+                    <span>密码</span>
+                    <input type="text" placeholder="Password">
+                </div>
+                <div class="password">
+                    <span>确认密码</span>
+                    <input type="text" placeholder="Password">
+                </div>
+                <a href="#" class="btnregister">注册</a>
+            </div>
+             <div class="register-login">
+                没有账号？
+                <a href="#">点击注册</a>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {};
+</script>
+<style lang="less" scoped>
+.register {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-y: hidden;
+}
+
+.register-wrp {
+  margin-top: 100px;
+  h1 {
+    letter-spacing: 4px;
+    font-size: 26px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+}
+.register-main {
+  width: 358px;
+  height: 300px;
+  box-shadow: 0px 0px 2px #ccc;
+  border: 1px solid #d8dee2;
+  border-radius: 5px;
+  padding: 20px;
+  .username,
+  .password {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    span {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    input {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      height: 34px;
+      font-size: 14px;
+      color: rgb(85, 85, 85);
+      background-color: rgb(255, 255, 255);
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgb(204, 204, 204);
+      border-radius: 4px;
+      padding-left: 5px;
+    }
+    input:focus {
+      box-shadow: rgba(0, 0, 0, 0.075) 0px 0px 25px;
+    }
+  }
+
+  .btnregister {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    padding: 8px 0;
+    background-color: #5db65d;
+    border-radius: 2px;
+  }
+  .btnregister:active {
+    background-color: #3b8b16;
+  }
+}
+
+.register-login {
+  box-shadow: 0px 0px 2px #ccc;
+  margin-top: 20px;
+  width: 358px;
+  padding: 10px 20px;
+  border: 1px solid #a5acb1;
+  border-radius: 2px;
+}
+</style>
+
