@@ -12,10 +12,36 @@
     <div class="nav-main">
       <div class="wrp">
         <div class="left">
-          <router-link to="/">
+          <a href="#" tag="a" @click.prevent.stop="showAllCategory">
             <span>所有分类</span>
-            <span class="triangle"></span>
-          </router-link>
+            <span class="triangle" ref="triangle"></span>
+            <div class="samllCategory" v-show="isShow_smallCategory">
+              <div class="item">
+                <span></span>
+                <span>General Discussion</span>
+              </div>
+              <div class="item">
+                <span></span>
+                <span>Get Help</span>
+              </div>
+              <div class="item">
+                <span></span>
+                <span>Show & Vue.js</span>
+              </div>
+              <div class="item">
+                <span></span>
+                <span>Show & CSS</span>
+              </div>
+              <div class="item">
+                <span></span>
+                <span>Show & JS</span>
+              </div>
+              <div class="item">
+                <span></span>
+                <span>Show & NodeJs</span>
+              </div>
+            </div>
+          </a>
           <router-link to="/">分类</router-link>
           <router-link to="/">最新</router-link>
           <router-link to="/">热门</router-link>
@@ -40,7 +66,31 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      isShow_smallCategory: false
+    };
+  },
+  mounted() {
+    this.registerDomShow();
+  },
+  methods: {
+    registerDomShow() {
+      document.addEventListener("click", ev => {
+        var targetName = ev.target.className;
+        if (targetName !== "samllCategory") {
+          this.isShow_smallCategory = false;
+          this.$refs.triangle.style.transform = "rotateZ(0deg)";
+        }
+      });
+    },
+    showAllCategory() {
+      this.$refs.triangle.style.transform = "rotateZ(90deg)";
+      this.isShow_smallCategory = true;
+    }
+  }
+};
 </script>
 <style lang="less" scoped>
 .home {
@@ -48,6 +98,7 @@ export default {};
 }
 .home .nav {
   position: fixed;
+  z-index: 99;
   top: 0px;
   width: 100%;
   display: flex;
@@ -108,6 +159,7 @@ export default {};
       justify-content: space-between;
       background-color: #e9e9e9;
       align-items: center;
+      position: relative;
     }
     a:first-child .triangle {
       width: 0px;
@@ -115,6 +167,65 @@ export default {};
       border-left: 6px solid #000;
       border-top: 5px solid transparent;
       border-bottom: 5px solid transparent;
+      transition: all 0.2s;
+    }
+    a:first-child .samllCategory {
+      position: absolute;
+      top: 35px;
+      left: 0px;
+      width: 230px;
+      background-color: #fff;
+      box-shadow: 0px 1px 5px 0px #ccc;
+      .item {
+        display: flex;
+        align-items: center;
+        padding: 12px 10px;
+        span:first-child {
+          font-size: 16px;
+          color: #8b8ba2;
+          width: 8px;
+          height: 8px;
+        }
+        span:last-child {
+          font-size: 12px;
+          font-weight: bold;
+          margin-left: 10px;
+        }
+      }
+      .item:hover {
+        background-color: #e2f5ec;
+      }
+      .item:nth-child(1) {
+        margin-top: 0px;
+        span:first-child {
+          background-color: rgb(18, 168, 157);
+        }
+      }
+      .item:nth-child(2) {
+        span:first-child {
+          background-color: rgb(101, 45, 144);
+        }
+      }
+      .item:nth-child(3) {
+        span:first-child {
+          background-color: rgb(247, 148, 29);
+        }
+      }
+      .item:nth-child(4) {
+        span:first-child {
+          background-color: rgb(191, 30, 46);
+        }
+      }
+      .item:nth-child(5) {
+        span:first-child {
+          background-color: rgb(179, 181, 180);
+        }
+      }
+      .item:nth-child(6) {
+        span:first-child {
+          background-color: rgb(37, 170, 226);
+        }
+      }
     }
     a:last-child {
       color: #fff;

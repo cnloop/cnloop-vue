@@ -2,6 +2,7 @@
     <div class="overview">
         <div class="nav">
             <span>分类</span>
+            <span>活动</span>
         </div>
         <ul class="content">
             <li>
@@ -306,6 +307,7 @@ export default {
 .overview .nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0px 8px;
   span {
     font-size: 14px;
@@ -330,6 +332,9 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        .title{
+            width: 380px;
+        }
         .bottom {
           display: flex;
           align-items: center;

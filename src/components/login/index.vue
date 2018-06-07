@@ -1,27 +1,27 @@
 <template>
-    <div class="login">
-        <div class="login-wrp">
-            <h1>CNLOOP</h1>                    
-            <div class="login-main">
-                <div class="username">
-                    <span>账号</span>
-                    <input type="text" placeholder="Username">
-                </div>
-                <div class="password">
-                    <div class="title">
-                        <span>密码</span>
-                        <a href="#">忘记密码？</a>
-                    </div>
-                    <input type="text" placeholder="Password">
-                </div>
-                <a href="#" class="btnLogin">登陆</a>
-            </div>
-            <div class="login-register">
-                没有账号？
-                <a href="#">点击注册</a>
-            </div>
+  <div class="login">
+    <div class="login-wrp">
+      <h1>CNLOOP</h1>
+      <div class="login-main">
+        <div class="username">
+          <span>账号</span>
+          <input type="text" placeholder="Username">
         </div>
+        <div class="password">
+          <div class="title">
+            <span>密码</span>
+            <a href="#">忘记密码？</a>
+          </div>
+          <input type="text" placeholder="Password">
+        </div>
+        <a href="#" class="btnLogin">登陆</a>
+      </div>
+      <div class="login-register">
+        没有账号？
+        <a href="#">点击注册</a>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {};
@@ -112,6 +112,9 @@ export default {};
   padding: 10px 20px;
   border: 1px solid #a5acb1;
   border-radius: 2px;
+  a {
+    color: #1411b5e8;
+  }
 }
 </style>
 

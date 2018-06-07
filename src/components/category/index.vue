@@ -119,6 +119,7 @@ export default {};
 }
 .category .nav {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 0px 8px;
   span {
