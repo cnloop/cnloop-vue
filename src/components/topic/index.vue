@@ -137,10 +137,6 @@ export default {
     th:nth-child(1) {
       padding-left: 10px;
     }
-    th:nth-child(2) {
-    }
-    th:nth-child(3) {
-    }
     th:nth-child(4) {
       text-align: center;
     }

@@ -1,7 +1,7 @@
 <template>
     <div class="overview">
         <div class="nav">
-            <span>分类</span>
+            <span>最新</span>
             <span>活动</span>
         </div>
         <ul class="content">

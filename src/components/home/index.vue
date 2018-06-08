@@ -9,51 +9,7 @@
         </div>
       </div>
     </div>
-    <div class="nav-main">
-      <div class="wrp">
-        <div class="left">
-          <a href="#" tag="a" @click.prevent.stop="showAllCategory">
-            <span>所有分类</span>
-            <span class="triangle" ref="triangle"></span>
-            <div class="samllCategory" v-show="isShow_smallCategory">
-              <div class="item">
-                <span></span>
-                <span>General Discussion</span>
-              </div>
-              <div class="item">
-                <span></span>
-                <span>Get Help</span>
-              </div>
-              <div class="item">
-                <span></span>
-                <span>Show & Vue.js</span>
-              </div>
-              <div class="item">
-                <span></span>
-                <span>Show & CSS</span>
-              </div>
-              <div class="item">
-                <span></span>
-                <span>Show & JS</span>
-              </div>
-              <div class="item">
-                <span></span>
-                <span>Show & NodeJs</span>
-              </div>
-            </div>
-          </a>
-          <router-link to="/">分类</router-link>
-          <router-link to="/">最新</router-link>
-          <router-link to="/">热门</router-link>
-        </div>
-        <div class="right">
-          <router-link to="/">
-            <span>+</span>
-            <span>发表新主题</span>
-          </router-link>
-        </div>
-      </div>
-    </div>
+    <navmain></navmain>
     <div class="content">
       <div class=".wrp">
         <router-view></router-view>
@@ -66,29 +22,17 @@
   </div>
 </template>
 <script>
+import navmain from "@/components/navmain";
 export default {
-  data() {
-    return {
-      isShow_smallCategory: false
-    };
+  components: {
+    navmain
   },
-  mounted() {
-    this.registerDomShow();
-  },
-  methods: {
-    registerDomShow() {
-      document.addEventListener("click", ev => {
-        var targetName = ev.target.className;
-        if (targetName !== "samllCategory") {
-          this.isShow_smallCategory = false;
-          this.$refs.triangle.style.transform = "rotateZ(0deg)";
-        }
-      });
-    },
-    showAllCategory() {
-      this.$refs.triangle.style.transform = "rotateZ(90deg)";
-      this.isShow_smallCategory = true;
-    }
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.$store.commit("changeSmallCategory", false);
+      vm.$store.commit("changeRouteParams", to.params.oRn);
+      vm.$store.commit("changeRoutePath", to.path);
+    });
   }
 };
 </script>
@@ -130,121 +74,7 @@ export default {
     }
   }
 }
-.home .nav-main {
-  margin-top: 88px;
-  display: flex;
-  justify-content: center;
-}
-.home .nav-main .wrp {
-  width: 1100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  .left {
-    width: 600px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    a {
-      color: #000;
-      padding: 5px 10px;
-      font-size: 15px;
-      margin-right: 15px;
-      border-radius: 3px;
-    }
-    a:first-child {
-      width: 80px;
-      display: inline-flex;
-      justify-content: space-between;
-      background-color: #e9e9e9;
-      align-items: center;
-      position: relative;
-    }
-    a:first-child .triangle {
-      width: 0px;
-      height: 0px;
-      border-left: 6px solid #000;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      transition: all 0.2s;
-    }
-    a:first-child .samllCategory {
-      position: absolute;
-      top: 35px;
-      left: 0px;
-      width: 230px;
-      background-color: #fff;
-      box-shadow: 0px 1px 5px 0px #ccc;
-      .item {
-        display: flex;
-        align-items: center;
-        padding: 12px 10px;
-        span:first-child {
-          font-size: 16px;
-          color: #8b8ba2;
-          width: 8px;
-          height: 8px;
-        }
-        span:last-child {
-          font-size: 12px;
-          font-weight: bold;
-          margin-left: 10px;
-        }
-      }
-      .item:hover {
-        background-color: #e2f5ec;
-      }
-      .item:nth-child(1) {
-        margin-top: 0px;
-        span:first-child {
-          background-color: rgb(18, 168, 157);
-        }
-      }
-      .item:nth-child(2) {
-        span:first-child {
-          background-color: rgb(101, 45, 144);
-        }
-      }
-      .item:nth-child(3) {
-        span:first-child {
-          background-color: rgb(247, 148, 29);
-        }
-      }
-      .item:nth-child(4) {
-        span:first-child {
-          background-color: rgb(191, 30, 46);
-        }
-      }
-      .item:nth-child(5) {
-        span:first-child {
-          background-color: rgb(179, 181, 180);
-        }
-      }
-      .item:nth-child(6) {
-        span:first-child {
-          background-color: rgb(37, 170, 226);
-        }
-      }
-    }
-    a:last-child {
-      color: #fff;
-      background-color: #34495e;
-    }
-  }
-
-  .right {
-    a {
-      border-radius: 3px;
-      width: 100px;
-      color: #000;
-      padding: 5px 10px;
-      display: flex;
-      justify-content: space-between;
-      background-color: #e9e9e9;
-    }
-  }
-}
 .home .content {
   margin-top: 32px;
   display: flex;
