@@ -43,9 +43,6 @@ export default {
 </script>
 
 <style>
-body {
-  height: 100%;
-}
 div,
 dl,
 dt,
@@ -94,5 +91,4 @@ th,
 td {
   padding: 0px;
 }
-
 </style>
