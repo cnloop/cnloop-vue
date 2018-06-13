@@ -1,7 +1,9 @@
 <template>
   <div class="write">
+    <preview @closePreview='closePreview' :isPreview='isPreview' :previewContent='content'></preview>
     <msg @alertMsg='msg' @closeAlert='closeAlert' :alertShow="isConfirm">确认离开吗？</msg>
-    <msg @alertMsg='tip' @closeAlert='closeAlert' :cancel='false' :alertShow="isTip">暂时还未开通保存功能！</msg>
+    <msg @alertMsg='tip' @closeAlert='closeAlert' :cancel='false' :alertShow="isTip">帮您保存到了本地！</msg>
+    <msg @alertMsg='tipErr' @closeAlert='closeAlert' :cancel='false' :alertShow="isTipErr">内容为空</msg>
     <div class="wrp">
       <div class="header">
         <div class="title">
@@ -12,8 +14,8 @@
             <span :style="{'background-color':sel.bgc}"></span>
             <span>{{sel.text}}</span>
           </div>
-          <span class="right triangle" id="triangle" ref="triangle"></span>
-          <div class="samllCategory" v-show="isShow">
+          <span class="right" v-rotate></span>
+          <div class="samllCategory" v-show="$store.state.isShow">
             <div class="item" v-for="item in smallSel" :key="item.text" @click.stop="selectCategory(item)">
               <span :style="{'background-color':item.bgc}"></span>
               <span>{{item.text}}</span>
@@ -22,10 +24,11 @@
         </div>
       </div>
       <div class="mk">
-        <mavon-editor :subfield='false' :boxShadow='false' :toolbars='toolbars' v-model="content" />
+        <mavon-editor :codeStyle='codeStyle' :subfield='false' :boxShadow='false' :toolbars='toolbars' v-model="content" />
       </div>
       <div class="submit">
-        <span @click="isTip=true">保存</span>
+        <span @click="preview">预览</span>
+        <span @click="save">保存</span>
         <span>提交</span>
       </div>
     </div>
@@ -33,15 +36,18 @@
 </template>
 <script>
 import msg from "@/components/common/msg";
+import preview from "@/components/preview";
 export default {
   data() {
     return {
       title: "",
+      codeStyle: "atom-one-dark",
       fromPath: "/",
       content: "",
-      isShow: false,
       isConfirm: false,
       isTip: false,
+      isTipErr: false,
+      isPreview: false,
       sel: { bgc: "rgb(18,168,157)", text: "General Discussion" },
       smallSel: [
         { bgc: "rgb(18,168,157)", text: "General Discussion" },
@@ -90,33 +96,25 @@ export default {
     };
   },
   mounted() {
-    this.registerDomShow();
     this.back();
     this.close();
+    this.getSave();
   },
   methods: {
     closeAlert() {
       this.isConfirm = false;
       this.isTip = false;
+      this.isTipErr = false;
+    },
+    closePreview() {
+      this.isPreview = false;
     },
     selectCategory(item) {
       this.sel = item;
-      this.$refs.triangle.style.transform = "rotateZ(0deg)";
-      this.isShow = false;
-    },
-    registerDomShow() {
-      document.addEventListener("click", ev => {
-        var targetName = ev.target.className;
-        if (targetName !== "samllCategory") {
-          var triangle = document.getElementById("triangle");
-          triangle.style.transform = "rotateZ(0deg)";
-          this.isShow = false;
-        }
-      });
+      this.$store.commit("changeState", false);
     },
     showAllCategory() {
-      this.isShow = true;
-      this.$refs.triangle.style.transform = "rotateZ(90deg)";
+      this.$store.commit("changeState", true);
     },
     msg(info) {
       if (info === "cancel") {
@@ -143,6 +141,27 @@ export default {
       if (info === "confirm") {
         this.isTip = false;
       }
+    },
+    tipErr(info) {
+      if (info === "confirm") {
+        this.isTipErr = false;
+      }
+    },
+    preview() {
+      this.isPreview = true;
+    },
+    getSave() {
+      var content = `${localStorage.getItem("cnloop-mkcontent")}`;
+      if (content === "null" || !content) return;
+      this.content = content;
+    },
+    save() {
+      if (!this.content) {
+        this.isTipErr = true;
+        return;
+      }
+      this.isTip = true;
+      localStorage.setItem("cnloop-mkcontent", this.content);
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -150,8 +169,18 @@ export default {
       vm.$data.fromPath = from.path;
     });
   },
+  directives: {
+    rotate(el, binding, vnode) {
+      if (!vnode.context.$store.state.isShow) {
+        el.style.transform = "rotateZ(0deg)";
+      } else {
+        el.style.transform = "rotateZ(90deg)";
+      }
+    }
+  },
   components: {
-    msg
+    msg,
+    preview
   }
 };
 </script>
@@ -294,10 +323,10 @@ export default {
   }
 
   .v-note-wrapper .v-note-op {
-    border: 1px solid #ada8a8b0 !important;
+    border: 1px solid #ccc !important;
   }
   .v-note-wrapper .v-note-panel {
-    border: 1px solid #ada8a8b0 !important;
+    border: 1px solid #ccc !important;
     border-top: none !important;
   }
 
@@ -325,24 +354,25 @@ export default {
   margin-top: 10px;
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 100px;
   span {
     cursor: pointer;
     border-radius: 1px;
     padding: 5px 20px;
   }
-  span:first-child {
+  span {
+    margin-left: 20px;
     border: 1px solid #dcdfe6;
   }
-  span:first-child:hover {
+  span:hover {
     background-color: #ecf5ff;
     border-color: #c6e2ff;
   }
   span:last-child {
-    margin-left: 20px;
     color: #fff;
     background-color: #42b983;
   }
-  span:hover {
+  span:last-child:hover {
     background-color: #7adeb1;
   }
 }

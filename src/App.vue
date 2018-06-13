@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="changestate">
     <router-view/>
     <vue-progress-bar></vue-progress-bar>
   </div>
@@ -34,9 +34,16 @@ export default {
   },
   watch: {
     $route(newVal) {
-      this.$store.commit("changeSmallCategory", false);
+      this.$store.commit("changeShowTip", false);
+      this.$store.commit("changeState", false);
       this.$store.commit("changeRouteParams", newVal.params.oRn);
       this.$store.commit("changeRoutePath", newVal.path);
+    }
+  },
+  methods: {
+    changestate() {
+      this.$store.commit("changeState", false);
+      this.$store.commit("changeShowTip", false);
     }
   }
 };
@@ -90,5 +97,12 @@ table {
 th,
 td {
   padding: 0px;
+}
+
+html,body{
+  height: 100%;
+}
+#app{
+  height: 100%;
 }
 </style>

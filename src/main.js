@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import VueProgressBar from 'vue-progressbar'
 
+import '@/assets/css/index.css'
+
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 // use
@@ -18,13 +20,21 @@ Vue.use(Vuex)
 
 var store = new Vuex.Store({
   state: {
-    smallCategory: false,
+    isLogin: false,
+    isShow: false,
+    isShowTip:false,
     routeParams: '',
     routePath: ''
   },
   mutations: {
-    changeSmallCategory(state, status) {
-      state.smallCategory = status
+    changeShowTip(state, status){
+      state.isShowTip = status;
+    },
+    changeIsLogin(state, status) {
+      state.isLogin = status;
+    },
+    changeState(state, status) {
+      state.isShow = status
     },
     changeRouteParams(state, params) {
       state.routeParams = params

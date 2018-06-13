@@ -4,8 +4,8 @@
       <div class="left">
         <a href="#" tag="a" @click.prevent.stop="showAllCategory">
           <span>{{val}}</span>
-          <span class="triangle" id="triangle" ref="triangle"></span>
-          <div class="samllCategory" v-show="$store.state.smallCategory">
+          <span class="triangle" v-rotate ref="triangle"></span>
+          <div class="samllCategory" v-show="$store.state.isShow">
             <router-link class="item" to="/general/new" tag="div">
               <span></span>
               <span>General Discussion</span>
@@ -84,32 +84,9 @@ export default {
       return category;
     }
   },
-  mounted() {
-    this.registerDomShow();
-  },
-  watch: {
-    "$store.state.smallCategory"(newVal) {
-      if (!newVal) {
-        // var triangle = document.getElementById("triangle");
-        // triangle.style.transform = "rotateZ(0deg)";
-        this.$refs.triangle.style.transform = "rotateZ(0deg)";
-      }
-    }
-  },
   methods: {
-    registerDomShow() {
-      document.addEventListener("click", ev => {
-        var targetName = ev.target.className;
-        if (targetName !== "samllCategory") {
-          this.$store.commit("changeSmallCategory", false);
-          var triangle = document.getElementById("triangle");
-          triangle.style.transform = "rotateZ(0deg)";
-        }
-      });
-    },
     showAllCategory() {
-      this.$refs.triangle.style.transform = "rotateZ(90deg)";
-      this.$store.commit("changeSmallCategory", true);
+      this.$store.commit("changeState", true);
     },
     toNew() {
       var path = this.$store.state.routePath;
@@ -127,6 +104,15 @@ export default {
         this.$router.push(`/all/hot`);
       } else {
         this.$router.push(`/${arr[1]}/hot`);
+      }
+    }
+  },
+  directives: {
+    rotate(el, binding, vnode) {
+      if (!vnode.context.$store.state.isShow) {
+        el.style.transform = "rotateZ(0deg)";
+      } else {
+        el.style.transform = "rotateZ(90deg)";
       }
     }
   }

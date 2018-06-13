@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login-wrp">
-      <h1>CNLOOP</h1>
+      <h1 @click="$router.push('/')">CNLOOP</h1>
       <div class="login-main">
         <div class="username">
           <span>账号</span>
@@ -14,7 +14,7 @@
           </div>
           <input type="text" placeholder="Password">
         </div>
-        <a href="#" class="btnLogin">登陆</a>
+        <a href="#" @click="login" class="btnLogin">登陆</a>
       </div>
       <div class="login-register">
         没有账号？
@@ -24,7 +24,14 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  methods: {
+    login() {
+      this.$store.commit("changeIsLogin", true);
+      this.$router.push("/");
+    }
+  }
+};
 </script>
 <style lang="less" scoped>
 .login {
@@ -42,6 +49,7 @@ export default {};
     font-weight: 500;
     text-align: center;
     margin-bottom: 30px;
+    cursor: pointer;
   }
 }
 .login-main {

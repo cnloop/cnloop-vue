@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div class="register-wrp">
-      <h1>CNLOOP</h1>
+      <h1 @click="$router.push('/')">CNLOOP</h1>
       <div class="register-main">
         <div class="username">
           <span>账号</span>
@@ -43,6 +43,7 @@ export default {};
     font-weight: 500;
     text-align: center;
     margin-bottom: 30px;
+    cursor: pointer;
   }
 }
 .register-main {
