@@ -1,6 +1,6 @@
 <template>
     <div class="precollection">
-        <h2>文章</h2>
+        <h2>收藏</h2>
     </div>
 </template>
 <style lang="less" scoped>

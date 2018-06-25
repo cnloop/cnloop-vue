@@ -5,37 +5,78 @@
       <div class="login-main">
         <div class="username">
           <span>账号</span>
-          <input type="text" placeholder="Username">
+          <input type="text" placeholder="Username" v-model="username">
         </div>
         <div class="password">
           <div class="title">
             <span>密码</span>
             <a href="#">忘记密码？</a>
           </div>
-          <input type="text" placeholder="Password">
+          <input type="password" placeholder="Password" v-model="password">
         </div>
-        <a href="#" @click="login" class="btnLogin">登陆</a>
+        <a href="" @click.prevent="login" class="btnLogin">登陆</a>
       </div>
       <div class="login-register">
         没有账号？
-        <a href="#">点击注册</a>
+        <router-link to="/register">点击注册</router-link>
       </div>
+      <transition name="alertMsg">
+        <div class="register-alertMsg" v-show="alertMsg">
+          <span>{{alertMsg}}</span>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
 <script>
+import { saveUserInfo } from "@/assets/js/auth";
+import { removeUserInfo } from "@/assets/js/auth";
 export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      alertMsg: ""
+    };
+  },
+  created() {
+    // axios拦截403 => 跳转到login => 目的是删除本地存储
+    this.getCode();
+    // github登陆 => 后台重定向到login => 并且携带用户信息包括token => 存储到本地
+    this.github();
+  },
   methods: {
-    login() {
-      this.$store.commit("changeIsLogin", true);
-      this.$router.push("/");
+    async login() {
+      var result = await this.$http.post("/login", {
+        username: this.username,
+        password: this.password
+      });
+      if (result.data.code === 200) {
+        saveUserInfo(result.data.data);
+        this.$router.push("/");
+      } else {
+        this.alertMsg = "账号或密码错误，请确认后再次输入";
+      }
+    },
+    getCode() {
+      var code = this.$route.params.code;
+      if (code && code == 1) {
+        removeUserInfo();
+        this.alertMsg = "您的账号需要重新登陆";
+      }
+    },
+    github() {
+      var data = this.$route.query.data;
+      if (data) {
+        saveUserInfo(JSON.parse(data));
+        this.$router.push("/");
+      }
     }
   }
 };
 </script>
 <style lang="less" scoped>
 .login {
-  height: 100%;
   display: flex;
   justify-content: center;
   overflow-y: hidden;
@@ -123,6 +164,27 @@ export default {
   a {
     color: #1411b5e8;
   }
+}
+
+.register-alertMsg {
+  margin-top: 15px;
+  width: 358px;
+  padding: 0px 21px;
+  height: 40px;
+  color: #f56c6c;
+  background-color: #fef0f0;
+  border-radius: 4px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+}
+.alertMsg-enter-active,
+.alertMsg-leave-active {
+  transition: opacity 0.5s;
+}
+.alertMsg-enter, .alertMsg-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
 

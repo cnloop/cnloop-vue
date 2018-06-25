@@ -6,11 +6,25 @@
 </template>
 
 <script>
+import { getUserInfo } from "@/assets/js/auth";
 export default {
   name: "App",
   created() {
+    
+    // 对本地存储信息加载到vuex
+    if (getUserInfo()) {
+      var user = JSON.parse(getUserInfo()).user;
+      this.$store.commit("changeUser", user);
+    }
+
+
     this.$Progress.start();
     this.$router.beforeEach((to, from, next) => {
+      if (getUserInfo()) {
+        var user = JSON.parse(getUserInfo()).user;
+        this.$store.commit("changeUser", user);
+      }
+
       //  does the page we want to go to have a meta.progress object
       if (to.meta.progress !== undefined) {
         let meta = to.meta.progress;
@@ -99,10 +113,10 @@ td {
   padding: 0px;
 }
 
-html,body{
+/* html,body{
   height: 100%;
 }
 #app{
   height: 100%;
-}
+} */
 </style>

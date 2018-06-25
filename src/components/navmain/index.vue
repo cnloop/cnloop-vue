@@ -36,7 +36,7 @@
         <a href="#" @click.prevent="toNew" :class="{changeBgc:$store.state.routeParams==='new'}">最新</a>
         <a href="#" @click.prevent="toHot" :class="{changeBgc:$store.state.routeParams==='hot'}">热门</a>
       </div>
-      <div class="right">
+      <div class="right" v-show="$store.state.user">
         <router-link to="/write">
           <span>+</span>
           <span>发表新主题</span>

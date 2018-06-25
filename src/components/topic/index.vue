@@ -61,9 +61,12 @@
                     <td>V-for with simple arrays: what key to use?</td>
                     <td>
                         <span></span>
-                        <span>Get Help</span>
+                        <span>Get Help GET HELP</span>
                     </td>
                     <td>
+                        <avatar username="Jane Doe" :size=25 class="td-ava"></avatar>
+                        <avatar username="Jane Doe" :size=25 class="td-ava"></avatar>
+                        <avatar username="Jane Doe" :size=25 class="td-ava"></avatar>
                         <avatar username="Jane Doe" :size=25 class="td-ava"></avatar>
                         <avatar username="Jane Doe" :size=25 class="td-ava"></avatar>
                         <avatar username="Jane Doe" :size=25 class="td-ava"></avatar>
@@ -136,6 +139,12 @@ export default {
     }
     th:nth-child(1) {
       padding-left: 10px;
+    }
+    th:nth-child(2) {
+      padding-left: 3px;
+    }
+     th:nth-child(3) {
+      padding-left: 3px;
     }
     th:nth-child(4) {
       text-align: center;

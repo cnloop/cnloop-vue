@@ -3,7 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import httpPlugin from '@/assets/js/http'
 import VueProgressBar from 'vue-progressbar'
+
+Vue.use(httpPlugin)
 
 import '@/assets/css/index.css'
 
@@ -20,18 +23,18 @@ Vue.use(Vuex)
 
 var store = new Vuex.Store({
   state: {
-    isLogin: false,
+    user: '',
     isShow: false,
-    isShowTip:false,
+    isShowTip: false,
     routeParams: '',
     routePath: ''
   },
   mutations: {
-    changeShowTip(state, status){
+    changeShowTip(state, status) {
       state.isShowTip = status;
     },
-    changeIsLogin(state, status) {
-      state.isLogin = status;
+    changeUser(state, user) {
+      state.user = user;
     },
     changeState(state, status) {
       state.isShow = status

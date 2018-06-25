@@ -3,7 +3,12 @@
     <preview @closePreview='closePreview' :isPreview='isPreview' :previewContent='content'></preview>
     <msg @alertMsg='msg' @closeAlert='closeAlert' :alertShow="isConfirm">确认离开吗？</msg>
     <msg @alertMsg='tip' @closeAlert='closeAlert' :cancel='false' :alertShow="isTip">帮您保存到了本地！</msg>
-    <msg @alertMsg='tipErr' @closeAlert='closeAlert' :cancel='false' :alertShow="isTipErr">内容为空</msg>
+    <msg @alertMsg='tipErr' @closeAlert='closeAlert' :cancel='false' :alertShow="isTipErr">项目不能为空</msg>
+    <div class="done" v-if="isDone">
+      <div class="done-wrp">
+        <span>上传成功，即将跳转到首页</span>
+      </div>
+    </div>
     <div class="wrp">
       <div class="header">
         <div class="title">
@@ -29,7 +34,7 @@
       <div class="submit">
         <span @click="preview">预览</span>
         <span @click="save">保存</span>
-        <span>提交</span>
+        <span @click="submit">提交</span>
       </div>
     </div>
   </div>
@@ -37,17 +42,19 @@
 <script>
 import msg from "@/components/common/msg";
 import preview from "@/components/preview";
+import { mavonEditor } from "mavon-editor";
 export default {
   data() {
     return {
       title: "",
       codeStyle: "atom-one-dark",
       fromPath: "/",
-      content: "",
+      content: ``,
       isConfirm: false,
       isTip: false,
       isTipErr: false,
       isPreview: false,
+      isDone: false,
       sel: { bgc: "rgb(18,168,157)", text: "General Discussion" },
       smallSel: [
         { bgc: "rgb(18,168,157)", text: "General Discussion" },
@@ -162,6 +169,28 @@ export default {
       }
       this.isTip = true;
       localStorage.setItem("cnloop-mkcontent", this.content);
+    },
+    async submit() {
+      var title = this.title;
+      var content = this.content;
+      var category = this.sel.text;
+      var user_id = this.$store.state.user.id;
+      if (title && content && category) {
+        var result = await this.$http.post("/topic", {
+          title,
+          content,
+          category,
+          user_id
+        });
+        if (result.data.code === 200) {
+          this.isDone = true;
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 3000);
+        }
+      } else {
+        this.isTipErr = true;
+      }
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -190,7 +219,30 @@ export default {
   display: flex;
   justify-content: center;
 }
-
+.write .done {
+  position: fixed;
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .done-wrp {
+    width: 300px;
+    height: 60px;
+    border-radius: 3px;
+    border: 1px solid #ebeef5;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      letter-spacing: 1px;
+    }
+  }
+}
 .write .wrp {
   width: 850px;
   display: flex;

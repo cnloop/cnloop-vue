@@ -53,7 +53,7 @@ export default {
         el.addEventListener(
           "change",
           function() {
-            var file = this.files[0];
+            var file = el.files[0];
             //限定上传文件的类型，判断是否是图片类型
             if (!/image\/\w+/.test(file.type)) {
               alert("只能选择图片");
@@ -82,9 +82,10 @@ export default {
 .setting {
   display: flex;
   justify-content: center;
+  position: fixed;
+  width: 100%;
   height: 100%;
   background-color: #fafafb;
-  overflow: hidden;
   .wrp {
     margin-top: 100px;
     width: 1100px;

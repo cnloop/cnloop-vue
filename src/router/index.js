@@ -16,6 +16,8 @@ import prefans from '@/components/personal/prefans'
 import prelike from '@/components/personal/prelike'
 import premsg from '@/components/personal/premsg'
 import precollection from '@/components/personal/precollection'
+import err from '@/components/404/'
+
 
 Vue.use(Router)
 
@@ -90,8 +92,14 @@ export default new Router({
     path: '/login',
     component: login
   }, {
+    path: '/login/:code',
+    component: login
+  }, {
     path: '/register',
     component: register
+  }, {
+    path: '/404',
+    component: err
   }, {
     path: '*',
     redirect: '/'

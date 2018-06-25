@@ -5,31 +5,60 @@
       <div class="register-main">
         <div class="username">
           <span>账号</span>
-          <input type="text" placeholder="Username">
+          <input type="text" placeholder="Username" v-model="username">
         </div>
         <div class="password">
           <span>密码</span>
-          <input type="text" placeholder="Password">
+          <input type="password" placeholder="Password" v-model="password_one">
         </div>
         <div class="password">
           <span>确认密码</span>
-          <input type="text" placeholder="Password">
+          <input type="password" placeholder="Password" v-model="password_two">
         </div>
-        <a href="#" class="btnregister">注册</a>
+        <a href="#" @click.prevent="register" class="btnregister">注册</a>
       </div>
       <div class="register-login">
         已有账号？
-        <a href="#">点击登陆</a>
+        <router-link to="/login">点击登陆</router-link>
       </div>
+      <transition name="alertMsg">
+        <div class="register-alertMsg" v-show="alertMsg">
+          <span>{{alertMsg}}</span>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
 <script>
-export default {};
+import { saveUserInfo } from "@/assets/js/auth";
+export default {
+  data() {
+    return {
+      alertMsg: "",
+      username: "",
+      password_one: "",
+      password_two: ""
+    };
+  },
+  methods: {
+    async register() {
+      try {
+        var result = await this.$http.post("/register", {
+          username: this.username,
+          password: this.password_one
+        });
+        // console.log(result);
+        saveUserInfo(result.data.data);
+        this.$router.push("/");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+};
 </script>
 <style lang="less" scoped>
 .register {
-  height: 100%;
   display: flex;
   justify-content: center;
   overflow-y: hidden;
@@ -106,6 +135,27 @@ export default {};
   a {
     color: #1411b5e8;
   }
+}
+
+.register-alertMsg {
+  margin-top: 15px;
+  width: 358px;
+  padding: 0px 21px;
+  height: 40px;
+  color: #f56c6c;
+  background-color: #fef0f0;
+  border-radius: 4px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+}
+.alertMsg-enter-active,
+.alertMsg-leave-active {
+  transition: opacity 0.5s;
+}
+.alertMsg-enter, .alertMsg-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
 

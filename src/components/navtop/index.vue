@@ -1,13 +1,14 @@
 <template>
   <div class="navtop">
+    <navtip :isNavTipShow='isNavTipShow' @closeNavTip='closeNavTip'></navtip>
     <div class="wrp">
       <h1 class="home-left">
         <router-link to="/">CNLOOP</router-link>
       </h1>
       <div class="home-right">
-        <div v-if="$store.state.isLogin" class="userinfo">
+        <div v-if="$store.state.user" class="userinfo">
           <div @click.stop="showTip" class="avaLogin">
-            <avatar :size=32 username="Jane Doe"></avatar>
+            <avatar :size=32 :username="username"></avatar>
           </div>
 
           <div v-show="$store.state.isShowTip" class="tip">
@@ -29,23 +30,39 @@
             </div>
           </div>
         </div>
-        <router-link v-show="!$store.state.isLogin" to="/register" class="register">注册</router-link>
-        <router-link v-show="!$store.state.isLogin" to="/login" class="login">登陆</router-link>
+        <router-link v-show="!$store.state.user" to="/register" class="register">注册</router-link>
+        <a v-show="!$store.state.user" @click.prevent="isNavTipShow=true" class="login">登陆</a>
       </div>
     </div>
   </div>
 </template>
 <script>
 import Avatar from "vue-avatar";
+import { removeUserInfo } from "@/assets/js/auth";
+import navtip from "@/components/navtop/navtip";
 export default {
+  created() {
+    this.getUserName();
+  },
   data() {
     return {
-      isTip: false
+      isTip: false,
+      isNavTipShow: false,
+      username: ""
     };
   },
   methods: {
+    getUserName() {
+      var user = this.$store.state.user;
+      if (user) {
+        this.username = user.username;
+      }
+    },
     showTip() {
       this.$store.commit("changeShowTip", true);
+    },
+    closeNavTip() {
+      this.isNavTipShow = false;
     },
     jump(info) {
       switch (info) {
@@ -59,6 +76,8 @@ export default {
           this.$router.push("/search");
           break;
         case "quit":
+          removeUserInfo();
+          this.$store.commit("changeUser", "");
           this.$router.push("/");
           break;
         default:
@@ -67,7 +86,8 @@ export default {
     }
   },
   components: {
-    Avatar
+    Avatar,
+    navtip
   }
 };
 </script>
@@ -100,6 +120,7 @@ export default {
       padding: 5px 10px;
       background-color: #42b983;
       border-radius: 2px;
+      cursor: pointer;
     }
     .register {
       margin-right: 20px;
