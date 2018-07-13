@@ -183,9 +183,10 @@ export default {
           user_id
         });
         if (result.data.code === 200) {
+          localStorage.removeItem("cnloop-mkcontent");
           this.isDone = true;
           setTimeout(() => {
-            this.$router.push("/");
+            this.$router.push("/all/new");
           }, 3000);
         }
       } else {
